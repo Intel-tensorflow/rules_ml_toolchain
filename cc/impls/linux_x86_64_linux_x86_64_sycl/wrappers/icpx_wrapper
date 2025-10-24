@@ -84,8 +84,9 @@ def call_compiler(argv, link = False, sycl_compile = True):
   flags = leftover
 
   sycl_device_only_flags = ['-fsycl']
-  sycl_device_only_flags.append('-fno-sycl-unnamed-lambda')
   sycl_device_only_flags.append('-fsycl-targets=spir64_gen,spir64')
+  sycl_device_only_flags.append('-fsycl-targets=intel_gpu_pvc')
+  sycl_device_only_flags.append('-Xspirv-translator -spirv-ext=+SPV_INTEL_split_barrier')
   sycl_device_only_flags.append('-sycl-std=2020')
   sycl_device_only_flags.append('-fhonor-infinities')
   sycl_device_only_flags.append('-fhonor-nans')
@@ -113,11 +114,16 @@ def call_compiler(argv, link = False, sycl_compile = True):
   for lib_path in ONEAPI_LIBRARY_PATH.split(":"):
     link_flags.append("-L" + lib_path)
   link_flags.append("-lOpenCL")
+  link_flags.append('-fsycl')
+  link_flags.append('-fsycl-targets=intel_gpu_pvc')
+  link_flags.append('-Xspirv-translator -spirv-ext=+SPV_INTEL_split_barrier')
 
   sycl_link_flags = ['-fPIC']
   sycl_link_flags.append("-fsycl")
   sycl_link_flags.append('-fsycl-max-parallel-link-jobs=8')
   sycl_link_flags.append('-fsycl-link')
+  sycl_link_flags.append('-fsycl-targets=intel_gpu_pvc')
+  sycl_link_flags.append('-Xspirv-translator -spirv-ext=+SPV_INTEL_split_barrier')
 
   in_files, out_files = [], []
   if sycl_compile:
