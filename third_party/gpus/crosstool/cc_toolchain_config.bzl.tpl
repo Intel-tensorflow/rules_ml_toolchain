@@ -394,7 +394,7 @@ def _features(cpu, compiler, ctx):
                             flag_group(
                                 flags = [
                                     "-U_FORTIFY_SOURCE",
-                                    "-D_FORTIFY_SOURCE=0",
+                                    "-D_FORTIFY_SOURCE=1",
                                     "-fstack-protector",
                                     "-Wall",
                                 ] + ctx.attr.host_compiler_warnings + [
