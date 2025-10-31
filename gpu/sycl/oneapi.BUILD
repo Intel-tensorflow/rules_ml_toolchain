@@ -239,6 +239,17 @@ cc_toolchain_import(
 )
 
 cc_toolchain_import(
+    name = "includes_dnnl",
+    hdrs = glob([
+        "dnnl/{oneapi_version}/include/**".format(oneapi_version = ONEAPI_VERSION),
+    ]),
+    includes = [
+        "dnnl/{oneapi_version}/include".format(oneapi_version = ONEAPI_VERSION),
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_toolchain_import(
     name = "core",
     additional_libs = glob([
         "compiler/{oneapi_version}/lib/*".format(oneapi_version = ONEAPI_VERSION),
@@ -258,16 +269,29 @@ cc_toolchain_import(
 )
 
 cc_library(
+    name = "dnnl_lib",
+    srcs = [
+        "dnnl/{oneapi_version}/lib/libdnnl.so".format(oneapi_version = ONEAPI_VERSION),
+    ],
+    data = [
+        "dnnl/{oneapi_version}/lib/libdnnl.so".format(oneapi_version = ONEAPI_VERSION),
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
     name = "headers",
     hdrs = glob([
         "mkl/{oneapi_version}/include/**".format(oneapi_version = ONEAPI_VERSION),
         "compiler/{oneapi_version}/include/**".format(oneapi_version = ONEAPI_VERSION),
         "compiler/{oneapi_version}/opt/compiler/include/**".format(oneapi_version = ONEAPI_VERSION),
+        "dnnl/{oneapi_version}/include/**".format(oneapi_version = ONEAPI_VERSION),
     ]),
     includes = [
         "mkl/{oneapi_version}/include".format(oneapi_version = ONEAPI_VERSION),
         "compiler/{oneapi_version}/include".format(oneapi_version = ONEAPI_VERSION),
         "compiler/{oneapi_version}/opt/compiler/include/**".format(oneapi_version = ONEAPI_VERSION),
+        "dnnl/{oneapi_version}/include".format(oneapi_version = ONEAPI_VERSION),
     ],
     visibility = ["//visibility:public"],
 )
@@ -286,6 +310,7 @@ cc_library(
         "mkl/{oneapi_version}/lib/libmkl_sycl_sparse.so".format(oneapi_version = ONEAPI_VERSION),
         "mkl/{oneapi_version}/lib/libmkl_sycl_rng.so".format(oneapi_version = ONEAPI_VERSION),
         "mkl/{oneapi_version}/lib/libmkl_sycl_blas.so".format(oneapi_version = ONEAPI_VERSION),
+        "dnnl/{oneapi_version}/lib/libdnnl.so".format(oneapi_version = ONEAPI_VERSION),  # +++
     ]),
     data = glob([
         "mkl/{oneapi_version}/lib/libmkl_intel_ilp64.so".format(oneapi_version = ONEAPI_VERSION),
@@ -299,6 +324,7 @@ cc_library(
         "mkl/{oneapi_version}/lib/libmkl_sycl_sparse.so".format(oneapi_version = ONEAPI_VERSION),
         "mkl/{oneapi_version}/lib/libmkl_sycl_rng.so".format(oneapi_version = ONEAPI_VERSION),
         "mkl/{oneapi_version}/lib/libmkl_sycl_blas.so".format(oneapi_version = ONEAPI_VERSION),
+        "dnnl/{oneapi_version}/lib/libdnnl.so".format(oneapi_version = ONEAPI_VERSION), 
     ]),
     linkopts = ["-Wl,-Bstatic,-lsvml,-lirng,-limf,-lirc,-lirc_s,-Bdynamic"],
     linkstatic = 1,
