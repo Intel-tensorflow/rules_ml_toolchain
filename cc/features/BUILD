@@ -46,7 +46,7 @@ cc_feature(
     name = "detect_issues",
     compiler_flags = [
         "-U_FORTIFY_SOURCE",
-        "-D_FORTIFY_SOURCE=1",
+        "-D_FORTIFY_SOURCE=0",
         "-fstack-protector",
         "-fno-omit-frame-pointer",
     ],
