@@ -122,7 +122,6 @@ oneapi_feature(
     ],
     icpx_path = ":compiler/{oneapi_version}/bin/icpx".format(oneapi_version = ONEAPI_VERSION),
     clang_path = ":compiler/{oneapi_version}/bin/compiler/clang".format(oneapi_version = ONEAPI_VERSION),
-    #wrapper_path = ":compiler/{oneapi_version}/bin/compiler".format(oneapi_version = ONEAPI_VERSION),
     version = "2025.1",
     verbose = True
 )
