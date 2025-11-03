@@ -73,6 +73,7 @@ def _oneapi_feature_impl(ctx):
             env_entries = [
                 env_entry("ONEAPI_LIBRARY_PATH", _get_lib_path_var(ctx)),
                 env_entry("ONEAPI_ICPX_PATH", (ctx.attr.icpx_path.label.workspace_root + "/" + ctx.attr.icpx_path.label.name)),
+                #env_entry("ONEAPI_SPIRV_WRAPPER", (ctx.attr.icpx_path.label.workspace_root + "/" + ctx.attr.wrapper_path.label.name)),
                 env_entry("ONEAPI_CLANG_PATH", (ctx.attr.clang_path.label.workspace_root + "/" + ctx.attr.clang_path.label.name)),
                 env_entry("ONEAPI_VERSION", ctx.attr.version),
                 env_entry("ONEAPI_VERBOSE", "1" if ctx.attr.verbose else "0"),
@@ -95,6 +96,10 @@ oneapi_feature = rule(
             allow_single_file = True,
             mandatory = False,
         ),
+        #"wrapper_path": attr.label(
+            #allow_single_file = True,
+            #mandatory = False,
+        #),
         "clang_path": attr.label(
             allow_single_file = True,
             mandatory = True,

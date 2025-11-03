@@ -122,6 +122,7 @@ oneapi_feature(
     ],
     icpx_path = ":compiler/{oneapi_version}/bin/icpx".format(oneapi_version = ONEAPI_VERSION),
     clang_path = ":compiler/{oneapi_version}/bin/compiler/clang".format(oneapi_version = ONEAPI_VERSION),
+    #wrapper_path = ":compiler/{oneapi_version}/bin/compiler".format(oneapi_version = ONEAPI_VERSION),
     version = "2025.1",
     verbose = True
 )
@@ -148,9 +149,57 @@ filegroup(
 )
 
 filegroup(
+    name = "clang-offload-wrapper",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/clang-offload-wrapper".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+
+filegroup(
+    name = "file-table-tform",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/file-table-tform".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+
+filegroup(
+    name = "spirv-to-ir-wrapper",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/spirv-to-ir-wrapper".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+
+filegroup(
+    name = "sycl-post-link",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/sycl-post-link".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+
+filegroup(
+    name = "llvm-foreach",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/llvm-foreach".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+filegroup(
     name = "llvm-objcopy",
     srcs = [
         "compiler/{oneapi_version}/bin/compiler/llvm-objcopy".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+
+filegroup(
+    name = "llvm-link",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/llvm-link".format(oneapi_version = ONEAPI_VERSION),
+    ],
+)
+
+filegroup(
+    name = "llvm-spirv",
+    srcs = [
+        "compiler/{oneapi_version}/bin/compiler/llvm-spirv".format(oneapi_version = ONEAPI_VERSION),
     ],
 )
 
