@@ -75,6 +75,11 @@ def system(cmd):
   else:
     return -os.WTERMSIG(ret)
 
+def check_filename_matches(filename, target_name):
+  """Check if the filename matches the target name"""
+  base_filename = os.path.basename(filename)
+  return base_filename == target_name
+
 def call_compiler(argv, link = False, sycl_compile = True):
   parser = ArgumentParser()
   parser.add_argument('-c', nargs=1, action='append')
@@ -149,6 +154,10 @@ def call_compiler(argv, link = False, sycl_compile = True):
     with tempfile.TemporaryDirectory() as temp_dir:
       object_file = os.path.join(temp_dir, out_file_name + '.compile.o')
       dev_file = os.path.join(temp_dir, out_file_name + '.dev.o')
+
+      # Check if filename matches ittnotify_static.c
+      if check_filename_matches(in_file, 'ittnotify_static.c'):
+        print(f"----Processing ittnotify_static.c file: {in_file}-------")
 
       # compile object file
       # icx -fsycl -c kernel.cpp -o kernel.compile.o
