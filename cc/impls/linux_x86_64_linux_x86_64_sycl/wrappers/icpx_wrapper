@@ -166,7 +166,11 @@ def call_compiler(argv, link = False, sycl_compile = True):
       # icx -fsycl -c kernel.cpp -o kernel.compile.o
       sycl_compile_flags = [" -c {} -o {} ".format(in_file, object_file)]
       sycl_compile_flags += (flags + common_flags + compile_flags + sycl_device_only_flags)
-      compile_cmd = ('env ' + ONEAPI_COMPILER + ' ' + ' '.join(sycl_compile_flags))
+      print(f"----sycl_compile_flags: {' '.join(sycl_compile_flags)}-------")
+      if check_filename_matches(in_file, 'ittnotify_static.c'):
+        compile_cmd = ('env ' + ICX_COMPILER + ' ' + ' '.join(sycl_compile_flags))
+      else:
+        compile_cmd = ('env ' + ONEAPI_COMPILER + ' ' + ' '.join(sycl_compile_flags))
       exit_status = system(compile_cmd)
       if exit_status != 0:
         return exit_status
