@@ -179,7 +179,10 @@ def call_compiler(argv, link = False, sycl_compile = True):
       # icx -fsycl -fPIC -fsycl-link kernel.compile.o -o kernel.dev.o
       sycl_link_flags_dev = [" {} -o {} ".format(object_file, dev_file)]
       sycl_link_flags_dev += (common_flags + sycl_link_flags)
-      link_cmd = ('env ' + ONEAPI_COMPILER + ' ' + ' '.join(sycl_link_flags_dev))
+      if check_filename_matches(in_file, 'ittnotify_static.c'):
+        link_cmd = ('env ' + ICX_COMPILER + ' ' + ' '.join(sycl_link_flags_dev))
+      else:
+        link_cmd = ('env ' + ONEAPI_COMPILER + ' ' + ' '.join(sycl_link_flags_dev))
       exit_status = system(link_cmd)
       if exit_status != 0:
         return exit_status
