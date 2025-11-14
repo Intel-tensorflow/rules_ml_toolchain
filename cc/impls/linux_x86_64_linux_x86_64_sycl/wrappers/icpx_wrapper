@@ -51,6 +51,7 @@ if not os.path.exists(ONEAPI_COMPILER):
     raise RuntimeError("Compiler '{0}' and '{1}' not found or invalid. Current directory is '{2}'"
       .format(os.environ['ONEAPI_ICPX_PATH'], os.environ['ONEAPI_CLANG_PATH'], os.getcwd()))
 
+ICX_COMPILER = "external/oneapi/compiler/2025.1/bin/icx"
 CPU_COMPILER = os.environ['GCC_PATH']   # GCC_PATH is Clang compiler path
 USE_ICPX_CLANG = True
 
@@ -158,6 +159,8 @@ def call_compiler(argv, link = False, sycl_compile = True):
       # Check if filename matches ittnotify_static.c
       if check_filename_matches(in_file, 'ittnotify_static.c'):
         print(f"----Processing ittnotify_static.c file: {in_file}-------")
+        compile_cmd = ('env ' + ICX_COMPILER )
+        print(f"----Using compile command: {compile_cmd}-------")
 
       # compile object file
       # icx -fsycl -c kernel.cpp -o kernel.compile.o
