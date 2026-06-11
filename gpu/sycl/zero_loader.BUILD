@@ -44,7 +44,10 @@ filegroup(
 cc_toolchain_import(
     name = "libs",
     additional_libs = glob([
-        "**/*",
+        #"**/*.a",
+        "**/ze_loader.so*",
+        "**/libze_tracing_layer.so*",
+        "**/libze_validation_layer.so*",
     ], allow_empty = True),
     shared_library = "libze_loader.so",
     visibility = ["//visibility:public"],
@@ -55,7 +58,6 @@ cc_library(
     srcs = glob([
         "lib/libze_loader.so*",
         "lib/liblevel_zero_utils.a",
-        "lib/libze_tracing_layer.so*",
     ], allow_empty = True),
     data = ([
         "lib/libze_loader.so.1",
