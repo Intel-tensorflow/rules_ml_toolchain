@@ -44,7 +44,6 @@ filegroup(
 cc_toolchain_import(
     name = "libs",
     additional_libs = glob([
-        #"**/*.a",
         "**/ze_loader.so*",
         "**/libze_tracing_layer.so*",
         "**/libze_validation_layer.so*",
