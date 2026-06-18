@@ -50,10 +50,9 @@ def if_sycl_is_configured(x):
       return select({"//conditions:default": x})
     return select({"//conditions:default": []})
 
-def if_sycl_build_is_configured(x, y):
+def if_sycl_build_is_configured(x, y = []):
     if sycl_build_is_configured():
       return x
-    return y
 
 def sycl_library(copts = [], linkopts = [], tags = [], deps = [], **kwargs):
     """Wrapper over cc_library which adds default SYCL options."""
