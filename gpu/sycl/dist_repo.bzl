@@ -69,6 +69,7 @@ _ONEAPI_BUILD_SUBSTITUTIONS = {
         "%{mpi_version}": "2021.15",
         "%{oneapi_lib_paths}": ":compiler/2025.1/lib,:compiler/2025.1/compiler/lib/intel64_lin",
         "%{oneapi_version}": "2025.1",
+        "%{pti_version}": "0.12",
         "%{tbb_version}": "2022.1",
         "%{tcm_version}": "1.3",
         "%{umf_version}": "0.10",
@@ -83,6 +84,9 @@ _ONEAPI_BUILD_SUBSTITUTIONS = {
         "%{mpi_version}": "2021.18",
         "%{oneapi_lib_paths}": ":2026.0/lib,:compiler/2026.0/lib,:compiler/2026.0/opt/compiler/lib",
         "%{oneapi_version}": "2026.0",
+        # TODO: verify the PTI version bundled in the 2026.0 base toolkit; kept at
+        # 0.12 to match the historical (hardcoded) behavior of the ":all" glob.
+        "%{pti_version}": "0.12",
         "%{tbb_version}": "2023.0",
         "%{tcm_version}": "1.5",
         "%{umf_version}": "1.1",
