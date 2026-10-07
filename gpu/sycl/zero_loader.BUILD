@@ -18,7 +18,7 @@
 # l0_library_dir: /usr/lib/x86_64-linux-gnu
 
 
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
 
 load(
     "@rules_ml_toolchain//third_party/rules_cc_toolchain/features:cc_toolchain_import.bzl",
@@ -63,5 +63,12 @@ cc_library(
         "lib/libze_loader.so.1",
     ]),
     linkstatic = 1,
+    visibility = ["//visibility:public"],
+)
+
+# Loader only, without the tracing layer (used by PTI).
+cc_import(
+    name = "ze_loader",
+    shared_library = "lib/libze_loader.so.1",
     visibility = ["//visibility:public"],
 )

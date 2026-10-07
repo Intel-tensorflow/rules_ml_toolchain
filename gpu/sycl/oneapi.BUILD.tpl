@@ -59,7 +59,6 @@ UMF_VERSION = "%{umf_version}"
 VTUNE_VERSION = "%{vtune_version}"
 ONEAPI_LIBRARY_PATHS = "%{oneapi_lib_paths}".split(",")
 LIBSYCL_VERSION = "%{libsycl_version}"
-PTI_VERSION = "%{pti_version}"
 EXTRA_LIB_SRC_GLOB = "%{extra_lib_src_glob}"
 
 filegroup(
@@ -111,7 +110,7 @@ filegroup(
             "mpi/{mpi_version}/lib/pkgconfig/**".format(mpi_version = MPI_VERSION),
             "mpi/{mpi_version}/opt/**".format(mpi_version = MPI_VERSION),
             "mpi/{mpi_version}/share/**".format(mpi_version = MPI_VERSION),
-            "pti/{pti_version}/**".format(pti_version = PTI_VERSION),
+            "pti/0.12/**",
             "tbb/{tbb_version}/env/**".format(tbb_version = TBB_VERSION),
             "tbb/{tbb_version}/etc/**".format(tbb_version = TBB_VERSION),
             "tbb/{tbb_version}/include/**".format(tbb_version = TBB_VERSION),
@@ -335,12 +334,26 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-cc_library(
+# Built from source, see //gpu/sycl/pti:pti_gpu.BUILD.
+alias(
     name = "pti",
-    srcs = glob(["pti/{pti_version}/lib/libpti_view.so*".format(pti_version = PTI_VERSION)], allow_empty = True),
-    hdrs = glob(["pti/{pti_version}/include/pti/**".format(pti_version = PTI_VERSION)], allow_empty = True),
-    data = glob(["pti/{pti_version}/lib/libpti_view.so*".format(pti_version = PTI_VERSION)], allow_empty = True),
-    includes = ["pti/{pti_version}/include".format(pti_version = PTI_VERSION)],
+    actual = "@pti_gpu//:pti_view",
+    visibility = ["//visibility:public"],
+)
+
+# XPTI framework used by PTI to trace the SYCL runtime, with the Intel runtime
+# libraries libxptifw.so needs.
+cc_library(
+    name = "xpti",
+    srcs = glob([
+        "compiler/{oneapi_version}/lib/libimf.so".format(oneapi_version = ONEAPI_VERSION),
+        "compiler/{oneapi_version}/lib/libintlc.so.5".format(oneapi_version = ONEAPI_VERSION),
+        "compiler/{oneapi_version}/lib/libirng.so".format(oneapi_version = ONEAPI_VERSION),
+        "compiler/{oneapi_version}/lib/libsvml.so".format(oneapi_version = ONEAPI_VERSION),
+        "compiler/{oneapi_version}/lib/libxptifw.so".format(oneapi_version = ONEAPI_VERSION),
+    ], allow_empty = True),
+    hdrs = glob(["compiler/{oneapi_version}/include/xpti/**".format(oneapi_version = ONEAPI_VERSION)], allow_empty = True),
+    includes = ["compiler/{oneapi_version}/include".format(oneapi_version = ONEAPI_VERSION)],
     visibility = ["//visibility:public"],
 )
 

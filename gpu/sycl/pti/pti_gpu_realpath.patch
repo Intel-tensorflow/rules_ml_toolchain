@@ -1,0 +1,27 @@
+--- a/src/pti_lib_handler.h
++++ b/src/pti_lib_handler.h
+@@ -10,6 +10,8 @@
+ #include <spdlog/sinks/stdout_color_sinks.h>
+ #include <spdlog/spdlog.h>
+ 
++#include <stdlib.h>
++
+ #include <algorithm>
+ #include <atomic>
+ #include <memory>
+@@ -47,6 +49,15 @@
+ inline std::string GetPathToPtiModule() {
+   auto pti_dir = ::utils::GetPathToSharedObject(GetPathToPtiModule);
+ 
++#if defined(__linux__)
++  // Bazel links shared libraries through _solib_* symlinks, so dladdr() reports
++  // the symlink. Resolve it to find the Core library next to the real file.
++  if (char* real_path = realpath(pti_dir.c_str(), nullptr)) {
++    pti_dir = real_path;
++    free(real_path);
++  }
++#endif  // __linux__
++
+   pti_dir = ::utils::GetFilePath(pti_dir);
+   if (pti_dir.empty()) {
+     return pti_dir;

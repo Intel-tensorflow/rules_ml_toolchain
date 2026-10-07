@@ -16,6 +16,7 @@
 """Hermetic SYCL repositories initialization. Consult the WORKSPACE on how to use it."""
 
 load("//gpu/sycl:dist_repo.bzl", "dist_repo")
+load("//gpu/sycl/pti:pti_repositories.bzl", "pti_repositories")
 load(
     "//gpu/sycl:sycl_redist_versions.bzl",
     "BUILD_TEMPLATES",
@@ -47,3 +48,5 @@ def sycl_init_repository(
             build_templates = build_template["version_to_template"],
             is_level_zero = (dist_name == "level_zero"),
         )
+
+    pti_repositories()

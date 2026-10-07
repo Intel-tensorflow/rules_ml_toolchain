@@ -1,0 +1,8 @@
+exports_files([
+    "ittapi.BUILD",
+    "level_zero_headers.BUILD",
+    "pti_gpu.BUILD",
+    "pti_gpu_realpath.patch",
+    "pti_repositories.bzl",
+    "spdlog.BUILD",
+])
