@@ -63,9 +63,10 @@ REDIST_DICT = {
             "level-zero-1.28.6",
         ],
         "ubuntu_24.04_2026.1": [
-            "https://d3q76yfpnzmnjx.cloudfront.net/level-zero-1.28.6.tar.gz",
-            "61658892532486018206f74c8839152dfba27b863e5f4edfcba6d8478ac71ad3",
-            "level-zero-1.28.6",
+            # PTI needs Level Zero 1.32.0 headers
+            "https://github.com/oneapi-src/level-zero/archive/refs/tags/v1.32.0.tar.gz",
+            "b658d3be89b2ea3c5e6b3214592acb58a4875e738184b1a4cc7e9cf878b5f7b9",
+            "level-zero-1.32.0",
         ],
     },
     "zero_loader": {

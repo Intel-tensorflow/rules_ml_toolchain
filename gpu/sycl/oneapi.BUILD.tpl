@@ -334,6 +334,12 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+alias(
+    name = "pti",
+    actual = "@pti_gpu//:pti_view",
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "libs",
     srcs = glob(
