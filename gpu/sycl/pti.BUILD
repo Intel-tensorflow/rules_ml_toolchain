@@ -21,6 +21,6 @@ cc_import(
     name = "pti_view",
     shared_library = "lib/libpti_view.so",
     hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
+    strip_include_prefix = "include",
     data = glob(["lib/libpti_view.so*"]),
 )
