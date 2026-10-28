@@ -20,7 +20,6 @@ package(default_visibility = ["//visibility:public"])
 cc_import(
     name = "pti_view",
     shared_library = "lib/libpti_view.so",
-    hdrs = glob(["include/**/*.h"]),
-    strip_include_prefix = "include",
+    hdrs = glob(["pti/**/*.h"]),
     data = glob(["lib/libpti_view.so*"]),
 )

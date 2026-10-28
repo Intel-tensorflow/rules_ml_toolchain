@@ -194,6 +194,7 @@ def _use_downloaded_archive(ctx):
     if ctx.attr.is_pti:
         _download_pti_source(ctx, ctx.attr.pti_source_dist)
         _generate_pti_headers(ctx)
+        ctx.symlink("include/pti", "pti")
         ctx.file("lib/.keep", "")
         found_pti_view = False
         for library in ctx.path("intel_pti-1.2.0.data/data/lib").readdir():
