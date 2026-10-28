@@ -40,6 +40,7 @@ def _download_distribution(ctx, dist):
     ctx.delete(file_name)
 
 def _pti_repo_impl(ctx):
+    ctx.template("BUILD.bazel", Label("//gpu/sycl:pti.BUILD"), {})
     ctx.download_and_extract(
         url = ctx.attr.library_url,
         output = "wheel",
