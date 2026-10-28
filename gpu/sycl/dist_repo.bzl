@@ -23,6 +23,9 @@ def _download_distribution(ctx, dist):
 
     url = dist[0]
     file_name = _get_file_name(url)
+    if ctx.attr.is_pti:
+        # Bazel's archive extractor selects the format from the filename.
+        file_name = "intel_pti-1.2.0.zip"
     print("Downloading {}".format(url))  # buildifier: disable=print
     ctx.download(
         url = url,
@@ -39,6 +42,48 @@ def _download_distribution(ctx, dist):
     )
 
     ctx.delete(file_name)
+
+def _download_pti_source(ctx, dist):
+    source_url = dist[0]
+    source_file = _get_file_name(source_url)
+    ctx.download(
+        url = source_url,
+        output = source_file,
+        sha256 = dist[1],
+    )
+    ctx.extract(
+        archive = source_file,
+        stripPrefix = dist[2],
+    )
+    ctx.delete(source_file)
+
+def _generate_pti_headers(ctx):
+    version_header = ctx.read("include/pti/pti_version.h.in")
+    version_header = version_header.replace("@PTI_VERSION@", "1.2.0")
+    version_header = version_header.replace("@PROJECT_VERSION_MAJOR@", "1")
+    version_header = version_header.replace("@PROJECT_VERSION_MINOR@", "2")
+    version_header = version_header.replace("@PROJECT_VERSION_PATCH@", "0")
+    version_header = version_header.replace(
+        "@PTI_COMMIT_HASH@",
+        "fdc44f65ccfc4c75f951a8f01b1ef9326223aaaf",
+    )
+    ctx.file("include/pti/pti_version.h", version_header)
+    ctx.file(
+        "include/pti/pti_export.h",
+        """#ifndef PTI_EXPORT_H
+#define PTI_EXPORT_H
+#if defined(_WIN32)
+#if defined(pti_EXPORTS)
+#define PTI_EXPORT __declspec(dllexport)
+#else
+#define PTI_EXPORT __declspec(dllimport)
+#endif
+#else
+#define PTI_EXPORT __attribute__((visibility("default")))
+#endif
+#endif
+""",
+    )
 
 def _get_oneapi_version(ctx):
     return ctx.getenv("ONEAPI_VERSION", "")
@@ -146,6 +191,17 @@ def _use_downloaded_archive(ctx):
 
     if ctx.attr.is_level_zero:
         _handle_level_zero(ctx)
+    if ctx.attr.is_pti:
+        _download_pti_source(ctx, ctx.attr.pti_source_dist)
+        _generate_pti_headers(ctx)
+        ctx.file("lib/.keep", "")
+        found_pti_view = False
+        for library in ctx.path("intel_pti-1.2.0.data/data/lib").readdir():
+            if library.basename.startswith("libpti_view.so"):
+                ctx.symlink(library, "lib/" + library.basename)
+                found_pti_view = True
+        if not found_pti_view:
+            fail("PTI 1.2.0 package does not contain libpti_view.so")
 
     build_template = Label(ctx.attr.build_templates[dist_key])
     substitutions = _get_build_substitutions(ctx, dist_key)
@@ -166,5 +222,7 @@ dist_repo = repository_rule(
         "distrs": attr.string_list_dict(mandatory = True),
         "build_templates": attr.string_dict(mandatory = True),
         "is_level_zero": attr.bool(default = False),
+        "is_pti": attr.bool(default = False),
+        "pti_source_dist": attr.string_list(default = []),
     },
 )

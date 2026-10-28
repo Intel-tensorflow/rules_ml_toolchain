@@ -19,6 +19,7 @@ load("//gpu/sycl:dist_repo.bzl", "dist_repo")
 load(
     "//gpu/sycl:sycl_redist_versions.bzl",
     "BUILD_TEMPLATES",
+    "PTI_SOURCE_DIST",
     "REDIST_DICT",
 )
 load(
@@ -46,4 +47,6 @@ def sycl_init_repository(
             distrs = redist_dict[dist_name],
             build_templates = build_template["version_to_template"],
             is_level_zero = (dist_name == "level_zero"),
+            is_pti = (dist_name == "pti"),
+            pti_source_dist = PTI_SOURCE_DIST if dist_name == "pti" else [],
         )
