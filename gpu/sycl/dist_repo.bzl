@@ -37,8 +37,59 @@ def _download_distribution(ctx, dist):
         archive = file_name,
         stripPrefix = strip_prefix,
     )
-
     ctx.delete(file_name)
+
+def _pti_repo_impl(ctx):
+    ctx.download_and_extract(
+        url = ctx.attr.library_url,
+        output = "wheel",
+        sha256 = ctx.attr.library_sha256,
+        type = "zip",
+    )
+    ctx.download_and_extract(
+        url = ctx.attr.source_url,
+        output = "source",
+        sha256 = ctx.attr.source_sha256,
+        stripPrefix = ctx.attr.source_strip_prefix,
+    )
+
+    for header in ctx.path("source/include/pti").readdir():
+        if header.basename.endswith(".h"):
+            ctx.symlink(header, "pti/" + header.basename)
+
+    version_header = ctx.read("source/include/pti/pti_version.h.in")
+    for key, value in {
+        "@PTI_VERSION@": "1.2.0",
+        "@PROJECT_VERSION_MAJOR@": "1",
+        "@PROJECT_VERSION_MINOR@": "2",
+        "@PROJECT_VERSION_PATCH@": "0",
+        "@PTI_COMMIT_HASH@": "fdc44f65ccfc4c75f951a8f01b1ef9326223aaaf",
+    }.items():
+        version_header = version_header.replace(key, value)
+    ctx.file("pti/pti_version.h", version_header)
+    ctx.file(
+        "pti/pti_export.h",
+        """#ifndef PTI_EXPORT_H
+#define PTI_EXPORT_H
+#define PTI_EXPORT __attribute__((visibility("default")))
+#endif
+""",
+    )
+    ctx.file("lib/.keep", "")
+    for library in ctx.path("wheel/intel_pti-1.2.0.data/data/lib").readdir():
+        if library.basename.startswith("libpti_view.so"):
+            ctx.symlink(library, "lib/" + library.basename)
+
+pti_repo = repository_rule(
+    implementation = _pti_repo_impl,
+    attrs = {
+        "library_url": attr.string(mandatory = True),
+        "library_sha256": attr.string(mandatory = True),
+        "source_url": attr.string(mandatory = True),
+        "source_sha256": attr.string(mandatory = True),
+        "source_strip_prefix": attr.string(mandatory = True),
+    },
+)
 
 def _get_oneapi_version(ctx):
     return ctx.getenv("ONEAPI_VERSION", "")
