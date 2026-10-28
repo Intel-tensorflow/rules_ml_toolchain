@@ -371,3 +371,9 @@ cc_library(
     linkstatic = 1,
     visibility = ["//visibility:public"],
 )
+
+alias(
+    name = "pti",
+    actual = "@pti//:pti_view",
+    visibility = ["//visibility:public"],
+)
