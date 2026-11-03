@@ -92,6 +92,14 @@ REDIST_DICT = {
     },
 }
 
+PTI_DIST = {
+    "library_url": "https://files.pythonhosted.org/packages/f1/ba/6493abfca000eb64cc5e115da02418a1adc1e2dd1c979f6cd22e37322d62/intel_pti-1.2.0-py2.py3-none-manylinux_2_28_x86_64.whl",
+    "library_sha256": "4cba1d71816f6b3f4283d55c5bc45f09532647e9c5ca8b3a4f136092fa8e3c94",
+    "source_url": "https://github.com/intel/pti-gpu/archive/refs/tags/pti-1.2.0.tar.gz",
+    "source_sha256": "b2fe5853d2f68efbc2da9a402a72e2d3ae53dd350e4604f0e4e904ff60b68394",
+    "source_strip_prefix": "pti-gpu-pti-1.2.0/sdk",
+}
+
 BUILD_TEMPLATES = {
     "oneapi": {
         "repo_name": "oneapi",

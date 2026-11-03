@@ -3,5 +3,6 @@ exports_files([
     "build_defs.bzl.tpl",
     "level_zero.BUILD",
     "oneapi.BUILD.tpl",
+    "pti.BUILD",
     "zero_loader.BUILD",
 ])

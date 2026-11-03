@@ -15,10 +15,11 @@
 
 """Hermetic SYCL repositories initialization. Consult the WORKSPACE on how to use it."""
 
-load("//gpu/sycl:dist_repo.bzl", "dist_repo")
+load("//gpu/sycl:dist_repo.bzl", "dist_repo", "pti_repo")
 load(
     "//gpu/sycl:sycl_redist_versions.bzl",
     "BUILD_TEMPLATES",
+    "PTI_DIST",
     "REDIST_DICT",
 )
 load(
@@ -47,3 +48,5 @@ def sycl_init_repository(
             build_templates = build_template["version_to_template"],
             is_level_zero = (dist_name == "level_zero"),
         )
+
+    pti_repo(name = "pti", **PTI_DIST)

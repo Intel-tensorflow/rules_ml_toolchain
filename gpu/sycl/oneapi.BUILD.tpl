@@ -110,7 +110,6 @@ filegroup(
             "mpi/{mpi_version}/lib/pkgconfig/**".format(mpi_version = MPI_VERSION),
             "mpi/{mpi_version}/opt/**".format(mpi_version = MPI_VERSION),
             "mpi/{mpi_version}/share/**".format(mpi_version = MPI_VERSION),
-            "pti/0.12/**",
             "tbb/{tbb_version}/env/**".format(tbb_version = TBB_VERSION),
             "tbb/{tbb_version}/etc/**".format(tbb_version = TBB_VERSION),
             "tbb/{tbb_version}/include/**".format(tbb_version = TBB_VERSION),
@@ -370,5 +369,11 @@ cc_library(
         "-Wl,-Bstatic,-lsvml,-lirng,-limf,-lirc,-lirc_s,-Bdynamic",
     ],
     linkstatic = 1,
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "pti",
+    actual = "@pti//:pti_view",
     visibility = ["//visibility:public"],
 )
